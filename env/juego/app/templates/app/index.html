@@ -1,0 +1,107 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>Juguemos a Piedra, Papel o Tijera?</title>
+
+    {% load bootstrap4 %}
+
+    {# CSS Bootstrap #}
+    {% bootstrap_css %}
+
+<!-- Custom styles for this template -->
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+<body class="text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form class="form-signin" method="post" action="jugar" id="formGame">
+                    {% csrf_token %}
+
+                    <h1 class="h1 mb-3 font-weight-normal">Piedra, Papel o Tijera?</h1>
+                    <input type="hidden" name="elementoJ1" value="" id="elementoJ1">
+                    <div class="row">
+                        <div class="col-4 align-self-center">
+                            <button class="btn btn-sm btnPiedra"><img class="width150" src="{% static 'img/piedra.png' %}"></button>
+                        </div>
+                        <div class="col-4 align-self-center">
+                            <button class="btn btn-sm btnPapel rotate90"><img class="height150"  src="{% static 'img/papel.png' %}"></button>
+                        </div>
+                        <div class="col-4 align-self-center">
+                            <button class="btn btn-sm btnTijera rotate90"><img class="height150"  src="{% static 'img/tijera.png' %}"></button>
+                        </div>
+                        <div class="col-12">
+                            <p class="h3 mb-3 font-weight-normal">Hacé tu movimiento.</p>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2 class="h3 mb-3 font-weight-bold">
+                    {% if result == True %}
+                        Ganaste!
+                    {% else %}
+                        Perdiste.
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                Tú: <span>{{jugador1Elemento}}</span>
+            </div>
+            <div class="col-4">
+                <p>VS</p>
+            </div>
+            <div class="col-4">
+                PC: <span>{{jugador2Elemento}}</span>
+            </div>
+        </div>
+
+        <p class="mt-5 mb-3 text-muted">&copy; 2020 Mariana Casella de Programación de Verdad</p>
+    </div>
+    <script>
+        window.addEventListener("load", function(event) {
+            var btnPiedra = document.getElementsByClassName('btnPiedra')[0];
+            var btnPapel = document.getElementsByClassName('btnPapel')[0];
+            var btnTijera = document.getElementsByClassName('btnTijera')[0];
+
+            btnPiedra.addEventListener('click', submitPiedra);
+            btnPapel.addEventListener('click', submitPapel);
+            btnTijera.addEventListener('click', submitTijera);
+        });
+
+        // Hacemos una funcion de enviar el formulario agregando el value del input hidden
+        function submitForm(elementoNombre)
+        {
+            var form = document.getElementById('formGame');
+            var elementoJ1 = document.getElementById('elementoJ1'); // Input hidden
+            elementoJ1.value = elementoNombre;
+            form.submit();
+        }
+        // Cada funcion agregará el nombre del elemento elegido en el hidden llamando a submitForm("NOMBRE")
+        function submitPiedra(e)
+        {
+            submitForm("Piedra");
+        }
+        function submitPapel(e)
+        {
+            submitForm("Papel");
+        }
+        function submitTijera(e)
+        {
+            submitForm("Tijera");
+        }
+    </script>
+</body>
+</html>
